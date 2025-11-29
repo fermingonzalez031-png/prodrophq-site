@@ -1,47 +1,71 @@
-import productsData from "../app/data/products.json";
+// components/ProductGrid.tsx
+"use client";
 
-interface Props {
-  category?: string;
-  search?: string;
-}
+import { useMemo } from "react";
+import { PRODUCTS, type Product } from "@/lib/products";
 
-export default function ProductGrid({ category, search }: Props) {
-  let products = productsData;
+type Props = {
+  category: string; // e.g. "plumbing", "hvac"
+};
 
-  if (category) {
-    products = products.filter(
-      (p) => p.category.toLowerCase() === category.toLowerCase()
-    );
+export default function ProductGrid({ category }: Props) {
+  // Filter products by category (trade)
+  const items: Product[] = useMemo(() => {
+    return PRODUCTS.filter((p) => p.trade === category);
+  }, [category]);
+
+  if (items.length === 0) {
+    return <p>No products found in this category.</p>;
   }
-
-  if (search) {
-  const q = search.toLowerCase();
-  products = products.filter((p) =>
-    p.name.toLowerCase().includes(q)
-  );
-}
-
 
   return (
     <div
       style={{
-        marginTop: "20px",
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "20px",
+        gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
+        gap: "25px",
+        marginTop: "20px",
       }}
     >
-      {products.map((p) => (
+      {items.map((p) => (
         <div
           key={p.id}
           style={{
-            border: "1px solid #ccc",
-            padding: "15px",
-            borderRadius: "8px",
+            border: "1px solid #e5e5e5",
+            borderRadius: "10px",
+            padding: "16px",
+            background: "white",
           }}
         >
-          <h3>{p.name}</h3>
-          <p>${p.price}</p>
+          <h3 style={{ margin: "0 0 8px 0" }}>{p.name}</h3>
+          <p style={{ margin: "0 0 4px 0", color: "#666" }}>{p.brand}</p>
+
+          <p style={{ fontWeight: "bold", margin: "10px 0" }}>
+            ${p.price.toFixed(2)}
+          </p>
+
+          <p
+            style={{
+              color: p.inStock ? "green" : "red",
+              marginBottom: "10px",
+            }}
+          >
+            {p.inStock ? "In stock" : "Out of stock"}
+          </p>
+
+          <button
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "6px",
+              background: "#0070f3",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            View
+          </button>
         </div>
       ))}
     </div>
