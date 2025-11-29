@@ -1,23 +1,43 @@
 // lib/getProducts.ts
-import products from "../app/data/products.json";
+
+import productsData from "@/app/data/products.json";
+
+export type TradeId = "plumbing" | "hvac" | "electrical" | "tools" | "safety";
 
 export type Product = {
   id: string;
+  trade: TradeId;   // plumbing, hvac, etc.
+  subcat: string;
   name: string;
-  category: string;
-  brand?: string;
+  brand: string;
   price: number;
-  image?: string;
+  inStock: boolean;
+  sku: string;
+  description: string;
 };
 
-export function getProductsByCategory(category: string): Product[] {
-  return products.filter((p) => p.category === category);
+export const PRODUCTS: Product[] = productsData as Product[];
+
+export function getAllProducts(): Product[] {
+  return PRODUCTS;
+}
+
+export function getProductsForTrade(tradeId: string): Product[] {
+  return PRODUCTS.filter(
+    (p) => p.trade.toLowerCase() === tradeId.toLowerCase()
+  );
 }
 
 export function getProductById(id: string): Product | undefined {
-  return products.find((p) => p.id === id);
+  return PRODUCTS.find((p) => p.id === id);
 }
 
-export function getAllProducts(): Product[] {
-  return products;
+export function searchProducts(q: string): Product[] {
+  const query = q.toLowerCase();
+  return PRODUCTS.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.sku.toLowerCase().includes(query) ||
+      p.description.toLowerCase().includes(query)
+  );
 }
