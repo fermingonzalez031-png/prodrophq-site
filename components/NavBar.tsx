@@ -3,11 +3,11 @@ import Link from "next/link";
 import { useState } from "react";
 
 const categories = [
-  { name: "Plumbing", href: "/catalog/plumbing" },
-  { name: "HVAC", href: "/catalog/hvac" },
+  { name: "plumbing", href: "/catalog/plumbing" },
+  { name: "hvac", href: "/catalog/hvac" },
   { name: "Electrical", href: "/catalog/electrical" },
-  { name: "Tools", href: "/catalog/tools" },
-  { name: "Safety", href: "/catalog/safety" },
+  { name: "tools", href: "/catalog/tools" },
+  { name: "safety", href: "/catalog/safety" },
 ];
 
 export default function NavBar() {
