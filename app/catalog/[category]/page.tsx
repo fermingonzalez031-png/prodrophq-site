@@ -1,17 +1,15 @@
 // app/catalog/[category]/page.tsx
 import Filters from "../../../components/Filters";
 import ProductGrid from "../../../components/ProductGrid";
-import { getCategoryName, getAllCategoryKeys } from "../../lib/catalogs.ts";
+import { getCategoryName, getAllCategoryKeys } from "../../../lib/catalogs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 type Props = {
   params: { category: string };
-  // searchParams if you want query support: searchParams?: { q?: string }
 };
 
 export async function generateStaticParams() {
-  // pre-render the known categories
   return getAllCategoryKeys().map((c) => ({ category: c }));
 }
 
@@ -28,7 +26,6 @@ export default function Page({ params }: Props) {
   const categoryName = getCategoryName(categoryKey);
 
   if (!categoryName) {
-    // unknown category -> 404
     notFound();
   }
 
