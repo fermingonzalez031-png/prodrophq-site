@@ -15,13 +15,12 @@ export default function ProductGrid({ category, search }: Props) {
   }
 
   if (search) {
-    const q = search.toLowerCase();
-    products = products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q)
-    );
-  }
+  const q = search.toLowerCase();
+  products = products.filter((p) =>
+    p.name.toLowerCase().includes(q)
+  );
+}
+
 
   return (
     <div
