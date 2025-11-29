@@ -1,6 +1,6 @@
 // app/product/[id]/page.tsx
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "../../lib/products"; // adjust path if needed
+import { PRODUCTS } from "@/lib/products"; 
 import type { Metadata } from "next";
 
 type Props = {
