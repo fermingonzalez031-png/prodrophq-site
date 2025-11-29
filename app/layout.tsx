@@ -16,6 +16,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
       </body>
+      import NavBar from "../components/NavBar";
+
+<body>
+  <NavBar />
+  <div className="page-wrapper">{children}</div>
+</body>
+
     </html>
   );
 }
