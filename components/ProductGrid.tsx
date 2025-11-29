@@ -2,17 +2,17 @@
 "use client";
 
 import { useMemo } from "react";
-import { PRODUCTS, type Product } from "@/lib/products";
+import { getProductsForTrade, type Product } from "@/lib/getProducts";
 
 type Props = {
-  category: string; // e.g. "plumbing", "hvac"
+  category: string; // plumbing, hvac, etc.
 };
 
 export default function ProductGrid({ category }: Props) {
-  // Filter products by category (trade)
-  const items: Product[] = useMemo(() => {
-    return PRODUCTS.filter((p) => p.trade === category);
-  }, [category]);
+  const items: Product[] = useMemo(
+    () => getProductsForTrade(category),
+    [category]
+  );
 
   if (items.length === 0) {
     return <p>No products found in this category.</p>;
@@ -21,51 +21,36 @@ export default function ProductGrid({ category }: Props) {
   return (
     <div
       style={{
+        marginTop: "20px",
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
-        gap: "25px",
-        marginTop: "20px",
+        gap: "20px",
       }}
     >
       {items.map((p) => (
         <div
           key={p.id}
           style={{
-            border: "1px solid #e5e5e5",
+            border: "1px solid #ddd",
+            padding: "15px",
             borderRadius: "10px",
-            padding: "16px",
-            background: "white",
+            backgroundColor: "white",
           }}
         >
-          <h3 style={{ margin: "0 0 8px 0" }}>{p.name}</h3>
-          <p style={{ margin: "0 0 4px 0", color: "#666" }}>{p.brand}</p>
-
-          <p style={{ fontWeight: "bold", margin: "10px 0" }}>
+          <h3 style={{ marginBottom: "4px" }}>{p.name}</h3>
+          <p style={{ margin: 0, color: "#555" }}>{p.brand}</p>
+          <p style={{ fontWeight: "bold", marginTop: "8px" }}>
             ${p.price.toFixed(2)}
           </p>
-
           <p
             style={{
+              marginTop: "6px",
               color: p.inStock ? "green" : "red",
-              marginBottom: "10px",
+              fontSize: "14px",
             }}
           >
             {p.inStock ? "In stock" : "Out of stock"}
           </p>
-
-          <button
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "6px",
-              background: "#0070f3",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            View
-          </button>
         </div>
       ))}
     </div>
