@@ -5,14 +5,15 @@ import { useMemo } from "react";
 import { getProductsForTrade, type Product } from "@/lib/getProducts";
 
 type Props = {
-  category: string; // plumbing, hvac, etc.
+  category?: string;
+  search?: string;   // <-- ADD THIS
 };
 
-export default function ProductGrid({ category }: Props) {
-  const items: Product[] = useMemo(
-    () => getProductsForTrade(category),
-    [category]
-  );
+
+export default function ProductGrid({ category, search }: Props) {
+  console.log("Search:", search);
+  // then filter products using search...
+}
 
   if (items.length === 0) {
     return <p>No products found in this category.</p>;
