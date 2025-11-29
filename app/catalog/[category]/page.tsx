@@ -1,7 +1,7 @@
 // app/catalog/[category]/page.tsx
 import Filters from "../../../components/Filters";
 import ProductGrid from "../../../components/ProductGrid";
-import { getCategoryName, getAllCategoryKeys } from "../../lib/catalogs";
+import { getCategoryName, getAllCategoryKeys } from "@/lib/catalogs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
