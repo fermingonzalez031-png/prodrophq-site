@@ -47,11 +47,11 @@ export default function Home() {
           }}
         >
          {[
-  { name: "Plumbing", link: "/catalog/Plumbing" },
-  { name: "HVAC", link: "/catalog/HVAC" },
+  { name: "Plumbing", link: "/catalog/plumbing" },
+  { name: "HVAC", link: "/catalog/hvac" },
   { name: "Electrical", link: "/catalog/electrical" },
-  { name: "Tools", link: "/catalog/Tools" },
-  { name: "Safety", link: "/catalog/Safety" },
+  { name: "Tools", link: "/catalog/tools" },
+  { name: "Safety", link: "/catalog/safety" },
 ].map((cat) => (
   <Link
     key={cat.name}
