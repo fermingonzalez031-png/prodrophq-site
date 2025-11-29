@@ -1,49 +1,63 @@
-import { getProductById } from "../../../lib/getProducts";
+import { PRODUCTS } from "../../../lib/products";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
-type Props = {
-  params: { id: string };
-};
+export default function ProductPage({ params }: { params: { id: string } }) {
+  const product = PRODUCTS.find((p) => p.id === params.id);
 
-export default function Page({ params }: Props) {
-  const item = getProductById(params.id);
-
-  if (!item) {
-    return <div style={{ padding: 20 }}>Product not found.</div>;
-  }
+  if (!product) return notFound();
 
   return (
-    <div style={{ display: "flex", gap: 30 }}>
-      <div style={{ flex: "0 0 360px" }}>
-        <div
-          style={{
-            background: "#f9fafb",
-            borderRadius: 8,
-            padding: 12,
-          }}
-        >
-          {item.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={item.image}
-              alt={item.name}
-              style={{ width: "100%", height: "auto" }}
-            />
-          ) : (
-            <div>No image</div>
-          )}
-        </div>
+    <div style={{ display: "flex", gap: "40px", marginTop: "40px" }}>
+      {/* PRODUCT IMAGE */}
+      <div
+        style={{
+          width: "400px",
+          height: "400px",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Image
+          src={product.image || "/placeholder.png"}
+          alt={product.name}
+          width={400}
+          height={400}
+          style={{ objectFit: "cover" }}
+        />
       </div>
 
-      <div style={{ flex: 1 }}>
-        <h1 style={{ marginTop: 0 }}>{item.name}</h1>
-        {item.brand && (
-          <div style={{ color: "#6b7280", marginBottom: 8 }}>{item.brand}</div>
-        )}
-        <div style={{ fontWeight: 700, fontSize: 20 }}>${item.price}</div>
-        <p style={{ marginTop: 20 }}>
-          This is a placeholder description. Later you can add a description
-          field into products.json and render it here.
+      {/* PRODUCT INFO */}
+      <div>
+        <h1 style={{ margin: 0 }}>{product.name}</h1>
+        <p style={{ fontSize: "20px", fontWeight: "bold" }}>
+          ${product.price.toFixed(2)}
         </p>
+
+        <p>
+          <strong>Brand:</strong> {product.brand}
+        </p>
+        <p>
+          <strong>SKU:</strong> {product.sku}
+        </p>
+
+        <p style={{ marginTop: "20px" }}>{product.description}</p>
+
+        <button
+          style={{
+            marginTop: "20px",
+            padding: "12px 20px",
+            background: "#0070f3",
+            color: "white",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            transition: "0.2s",
+          }}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
