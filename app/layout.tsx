@@ -23,11 +23,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
 
 <nav style={{ display: "flex", gap: "20px", fontSize: "16px" }}>
-  <Link href="/catalog/Plumbing">Plumbing</Link>
-  <Link href="/catalog/HVAC">HVAC</Link>
-  <Link href="/catalog/electrical">Electrical</Link>
-  <Link href="/catalog/Tools">Tools</Link>
-  <Link href="/catalog/Safety">Safety</Link>
+ <Link href="/catalog/plumbing">Plumbing</Link>
+<Link href="/catalog/hvac">HVAC</Link>
+<Link href="/catalog/electrical">Electrical</Link>
+<Link href="/catalog/tools">Tools</Link>
+<Link href="/catalog/safety">Safety</Link>
 </nav>
 
         </header>
