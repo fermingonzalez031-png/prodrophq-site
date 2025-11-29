@@ -1,28 +1,36 @@
-import type { Metadata } from "next";
+// app/layout.tsx
 import "./globals.css";
-import Header from "@/components/Header";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "ProDrop HQ – Jobsite Supply Delivery",
-  description: "ProDrop gets HVAC, plumbing, and electrical materials from supply houses to your jobsite fast."
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main style={{ maxWidth: 1200, margin: "0 auto", padding: "16px" }}>
-          {children}
-        </main>
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "15px 30px",
+            backgroundColor: "#0A2540",
+            color: "white",
+          }}
+        >
+          <Link href="/" style={{ fontSize: "24px", fontWeight: "bold" }}>
+            ProDrop
+          </Link>
+
+          <nav style={{ display: "flex", gap: "20px", fontSize: "16px" }}>
+            <Link href="/catalog/plumbing">Plumbing</Link>
+            <Link href="/catalog/hvac">HVAC</Link>
+            <Link href="/catalog/electrical">Electrical</Link>
+            <Link href="/catalog/tools">Tools</Link>
+            <Link href="/catalog/safety">Safety</Link>
+          </nav>
+        </header>
+
+        <main style={{ padding: "20px" }}>{children}</main>
       </body>
-      import NavBar from "../components/NavBar";
-
-<body>
-  <NavBar />
-  <div className="page-wrapper">{children}</div>
-</body>
-
     </html>
   );
 }
