@@ -1,6 +1,6 @@
 // app/product/[id]/page.tsx
 import { notFound } from "next/navigation";
-import { PRODUCTS } from "@/lib/products"; 
+import { PRODUCTS, getProductById } from "@/lib/getProducts";
 import type { Metadata } from "next";
 
 type Props = {
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = PRODUCTS.find((p) => p.id === params.id);
+  const product = getProductById(params.id);
 
   return {
     title: product ? `${product.name} · ProDrop` : "Product Not Found",
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function ProductPage({ params }: Props) {
-  const product = PRODUCTS.find((p) => p.id === params.id);
+  const product = getProductById(params.id);
 
   if (!product) {
     notFound();
@@ -36,7 +36,7 @@ export default function ProductPage({ params }: Props) {
       </p>
 
       <p style={{ fontSize: "22px", margin: "15px 0" }}>
-        <strong>${product.price}</strong>
+        <strong>${product.price.toFixed(2)}</strong>
       </p>
 
       <p>
@@ -56,21 +56,6 @@ export default function ProductPage({ params }: Props) {
       >
         {product.inStock ? "In Stock" : "Out of Stock"}
       </p>
-
-      <button
-        style={{
-          marginTop: "25px",
-          padding: "12px 18px",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#0070f3",
-          color: "white",
-          fontSize: "16px",
-          cursor: "pointer",
-        }}
-      >
-        Add to Cart
-      </button>
     </div>
   );
 }
