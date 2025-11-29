@@ -46,30 +46,31 @@ export default function Home() {
             gap: "20px",
           }}
         >
-          {[
-            { name: "Plumbing", link: "/catalog/plumbing" },
-            { name: "HVAC", link: "/catalog/hvac" },
-            { name: "Electrical", link: "/catalog/electrical" },
-            { name: "Tools", link: "/catalog/tools" },
-            { name: "Safety", link: "/catalog/safety" },
-          ].map((cat) => (
-            <Link
-              key={cat.name}
-              href={cat.link}
-              style={{
-                padding: "25px",
-                background: "#f5f5f5",
-                borderRadius: "10px",
-                fontSize: "22px",
-                fontWeight: "600",
-                textAlign: "center",
-                textDecoration: "none",
-                color: "#0A2540",
-              }}
-            >
-              {cat.name}
-            </Link>
-          ))}
+         {[
+  { name: "Plumbing", link: "/catalog/Plumbing" },
+  { name: "HVAC", link: "/catalog/HVAC" },
+  { name: "Electrical", link: "/catalog/electrical" },
+  { name: "Tools", link: "/catalog/Tools" },
+  { name: "Safety", link: "/catalog/Safety" },
+].map((cat) => (
+  <Link
+    key={cat.name}
+    href={cat.link}
+    style={{
+      padding: "25px",
+      background: "#f5f5f5",
+      borderRadius: "10px",
+      fontSize: "22px",
+      fontWeight: "600",
+      textAlign: "center",
+      textDecoration: "none",
+      color: "#0A2540",
+    }}
+  >
+    {cat.name}
+  </Link>
+))}
+
         </div>
       </section>
 
