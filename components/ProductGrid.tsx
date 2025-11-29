@@ -1,18 +1,29 @@
-import ProductCard from "@/components/ProductCard";
-import type { Product } from "@/lib/catalog";
+// components/ProductGrid.tsx
+import ProductCard from "./ProductCard";
+import { getProductsByCategory } from "../lib/getProducts";
 
-interface Props {
-  products: Product[];
-}
+type Props = {
+  category: string;
+};
 
-export default function ProductGrid({ products }: Props) {
-  if (!products.length) {
-    return <p>No products in this demo yet.</p>;
+export default function ProductGrid({ category }: Props) {
+  const items = getProductsByCategory(category);
+
+  if (!items.length) {
+    return <p>No products in this category yet.</p>;
   }
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 12 }}>
-      {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
+    <div
+      style={{
+        marginTop: 20,
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: 20,
+      }}
+    >
+      {items.map((item) => (
+        <ProductCard key={item.id} item={item} />
       ))}
     </div>
   );
