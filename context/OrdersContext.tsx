@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import type { CartItem } from "@/context/CartContext";
 import type { OrderStatus } from "@/components/OrderProgress";
 
@@ -31,8 +31,36 @@ interface OrdersContextValue {
 
 const OrdersContext = createContext<OrdersContextValue | undefined>(undefined);
 
+const STORAGE_KEY = "prodrophq_orders";
+
 export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load from localStorage
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Order[];
+        setOrders(parsed);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setHydrated(true);
+    }
+  }, []);
+
+  // Save to localStorage when orders change
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    } catch {
+      // ignore
+    }
+  }, [orders, hydrated]);
 
   const createOrder: OrdersContextValue["createOrder"] = (input) => {
     const id =
