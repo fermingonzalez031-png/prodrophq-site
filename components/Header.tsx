@@ -3,21 +3,14 @@
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/context/UserContext";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 export const Header = () => {
   const { items } = useCart();
   const { profile } = useUser();
   const router = useRouter();
-  const searchParams = useSearchParams();
-
   const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    const q = searchParams?.get("q") ?? "";
-    setQuery(q);
-  }, [searchParams]);
 
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
