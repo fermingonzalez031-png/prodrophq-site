@@ -1,13 +1,18 @@
-
 "use client";
 
 import { FormEvent, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
+import { useOrders } from "@/context/OrdersContext";
+import { useUser } from "@/context/UserContext";
+import Link from "next/link";
 
 export const CheckoutForm = () => {
   const { items, total, clearCart } = useCart();
+  const { createOrder } = useOrders();
+  const { profile } = useUser();
   const router = useRouter();
+
   const [poNumber, setPoNumber] = useState("");
   const [jobsiteName, setJobsiteName] = useState("");
   const [jobsiteAddress, setJobsiteAddress] = useState("");
@@ -18,21 +23,50 @@ export const CheckoutForm = () => {
   const [paymentMethod, setPaymentMethod] = useState<"card" | "terms">("card");
   const [submitting, setSubmitting] = useState(false);
 
+  // If no items
+  if (!items.length) {
+    return <p className="text-sm text-slate-600">Your cart is empty.</p>;
+  }
+
+  // Gate checkout on business registration
+  if (!profile) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-slate-700">
+          Please register your business before scheduling a delivery. Prodrophq
+          is available to licensed contractors only.
+        </p>
+        <Link
+          href="/account/register"
+          className="inline-flex rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          Register your business
+        </Link>
+      </div>
+    );
+  }
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!items.length) return;
 
     setSubmitting(true);
 
-    const mockOrderId = "ORD-" + Math.floor(Math.random() * 1_000_000);
+    const orderId = createOrder({
+      items,
+      poNumber,
+      jobsiteName,
+      jobsiteAddress,
+      deliveryDate,
+      deliveryTime,
+      sameDay,
+      notes,
+      paymentMethod,
+    });
+
     clearCart();
-
-    router.push(`/orders/${mockOrderId}`);
+    router.push(`/orders/${orderId}`);
   };
-
-  if (!items.length) {
-    return <p className="text-sm text-slate-600">Your cart is empty.</p>;
-  }
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-[2fr,1fr]">
