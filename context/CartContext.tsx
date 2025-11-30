@@ -1,7 +1,6 @@
-
 "use client";
 
-import React, { createContext, useContext, useState, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { Product } from "@/data/products";
 
 export interface CartItem {
@@ -20,8 +19,36 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
+const STORAGE_KEY = "prodrophq_cart";
+
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load initial cart from localStorage
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as CartItem[];
+        setItems(parsed);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setHydrated(true);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes (after hydration)
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // ignore
+    }
+  }, [items, hydrated]);
 
   const addToCart = (product: Product, quantity = 1) => {
     setItems((prev) => {
