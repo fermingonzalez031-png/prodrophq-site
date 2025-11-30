@@ -20,10 +20,10 @@ export default function OrderTrackingPage({ params }: Props) {
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">Order not found</h1>
         <p className="text-sm text-slate-600">
-          This demo keeps orders only in your current browser session. If you
-          refreshed the page or opened it on a different device, the order
-          details may no longer be available.
-        </p>
+  We couldn&apos;t find that order in this browser. Make sure you&apos;re using
+  the same device where the order was created.
+</p>
+
         <Link
           href="/"
           className="inline-flex rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
