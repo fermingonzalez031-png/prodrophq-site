@@ -52,11 +52,14 @@ export const Header = () => {
           </button>
         </form>
 
-        <nav className="flex items-center gap-4 text-sm justify-end">
+         <nav className="flex items-center gap-4 text-sm justify-end">
           <Link href="/categories" className="hover:underline">
             Shop by Category
           </Link>
-          <Link href="/account/register" className="hover:underline">
+          <Link
+            href={profile ? "/account" : "/account/register"}
+            className="hover:underline"
+          >
             {profile ? "My Account" : "Register Business"}
           </Link>
           <Link href="/cart" className="relative hover:underline">
