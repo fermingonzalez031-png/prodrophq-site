@@ -3,6 +3,7 @@
 import { OrderProgress, OrderStatus } from "@/components/OrderProgress";
 import { useOrders } from "@/context/OrdersContext";
 import Link from "next/link";
+import { suppliers } from "@/data/suppliers";
 
 interface Props {
   params: { orderId: string };
@@ -32,6 +33,8 @@ export default function OrderTrackingPage({ params }: Props) {
       </div>
     );
   }
+
+  const supplier = suppliers.find((s) => s.id === order.supplierId);
 
   const statuses: OrderStatus[] = [
     "gathering",
@@ -81,6 +84,12 @@ export default function OrderTrackingPage({ params }: Props) {
             <span className="font-medium">Same-day:</span>{" "}
             {order.sameDay ? "Yes (in-stock items)" : "No"}
           </p>
+          {supplier && (
+            <p>
+              <span className="font-medium">Supply house:</span>{" "}
+              {supplier.name} — {supplier.city}, {supplier.state}
+            </p>
+          )}
           {order.notes && (
             <p>
               <span className="font-medium">Driver notes:</span> {order.notes}
