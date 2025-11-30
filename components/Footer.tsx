@@ -16,6 +16,12 @@ export const Footer = () => {
           >
             Driver view (demo)
           </Link>
+          <Link
+            href="/supplier"
+            className="text-xs text-blue-600 hover:underline"
+          >
+            Supplier view (demo)
+          </Link>
         </div>
       </div>
     </footer>
