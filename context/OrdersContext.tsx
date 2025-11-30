@@ -16,12 +16,15 @@ export interface Order {
   sameDay: boolean;
   notes?: string;
   paymentMethod: "card" | "terms";
+  supplierId: string;
   createdAt: string;
 }
 
 interface OrdersContextValue {
   orders: Order[];
-  createOrder: (input: Omit<Order, "id" | "status" | "createdAt">) => string;
+  createOrder: (
+    input: Omit<Order, "id" | "status" | "createdAt">
+  ) => string;
   updateStatus: (id: string, status: OrderStatus) => void;
   getOrderById: (id: string) => Order | undefined;
 }
@@ -58,7 +61,9 @@ export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
     orders.find((o) => o.id === id);
 
   return (
-    <OrdersContext.Provider value={{ orders, createOrder, updateStatus, getOrderById }}>
+    <OrdersContext.Provider
+      value={{ orders, createOrder, updateStatus, getOrderById }}
+    >
       {children}
     </OrdersContext.Provider>
   );
