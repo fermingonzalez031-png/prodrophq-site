@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useOrders } from "@/context/OrdersContext";
 import { useUser } from "@/context/UserContext";
 import Link from "next/link";
+import { suppliers } from "@/data/suppliers";
 
 export const CheckoutForm = () => {
   const { items, total, clearCart } = useCart();
@@ -21,14 +22,15 @@ export const CheckoutForm = () => {
   const [sameDay, setSameDay] = useState(false);
   const [notes, setNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"card" | "terms">("card");
+  const [supplierId, setSupplierId] = useState(
+    suppliers.length ? suppliers[0].id : ""
+  );
   const [submitting, setSubmitting] = useState(false);
 
-  // If no items
   if (!items.length) {
     return <p className="text-sm text-slate-600">Your cart is empty.</p>;
   }
 
-  // Gate checkout on business registration
   if (!profile) {
     return (
       <div className="space-y-4">
@@ -48,7 +50,7 @@ export const CheckoutForm = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!items.length) return;
+    if (!items.length || !supplierId) return;
 
     setSubmitting(true);
 
@@ -62,6 +64,7 @@ export const CheckoutForm = () => {
       sameDay,
       notes,
       paymentMethod,
+      supplierId,
     });
 
     clearCart();
@@ -72,6 +75,29 @@ export const CheckoutForm = () => {
     <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-[2fr,1fr]">
       <div className="space-y-4">
         <h2 className="font-semibold text-lg">Order details</h2>
+
+        {/* Supplier selection */}
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Preferred supply house</label>
+          <select
+            value={supplierId}
+            onChange={(e) => setSupplierId(e.target.value)}
+            className="w-full rounded-md border px-3 py-2 text-sm bg-white"
+            required
+          >
+            {suppliers.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name} — {s.city}, {s.state} (same-day ~{s.sameDayRadiusMiles}
+                mi)
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-slate-500">
+            In future releases, suppliers will be filtered by your jobsite
+            location and inventory availability.
+          </p>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1">
             <label className="text-sm font-medium">Purchase order</label>
@@ -96,6 +122,7 @@ export const CheckoutForm = () => {
             />
           </div>
         </div>
+
         <div className="space-y-1">
           <label className="text-sm font-medium">Jobsite address</label>
           <input
@@ -107,6 +134,7 @@ export const CheckoutForm = () => {
             className="w-full rounded-md border px-3 py-2 text-sm"
           />
         </div>
+
         <div className="grid gap-4 sm:grid-cols-3 items-end">
           <div className="space-y-1">
             <label className="text-sm font-medium">Delivery date</label>
@@ -138,6 +166,7 @@ export const CheckoutForm = () => {
             Same-day (in-stock items only)
           </label>
         </div>
+
         <div className="space-y-1">
           <label className="text-sm font-medium">Notes for driver</label>
           <textarea
